@@ -4,7 +4,11 @@ This is not an official HashiCorp tool and its currently in POC stage
 # What is it
 Its an utility to backup the contents of a KV-v2 secret engine from a HashiCorp Vault using its **Transit secret engine**
 
-The idea is that we can move the data in json format while being encrypted at rest storing the key somewhere else.
+![Transit engine](https://d33wubrfki0l68.cloudfront.net/cdaa6b27e251650a51c48cfe22fd860335196fc2/999b0/static/img/vault-encryption.png)
+
+The idea is that we can move the data in json format while being encrypted at rest with a key stored in a different location.
+
+More information on how the Transit secrent engine works: https://learn.hashicorp.com/vault/encryption-as-a-service/eaas-transit
 
 # How to use it
 
@@ -20,7 +24,7 @@ $ export VAULT_ADDR="http://127.0.0.:8300"
 $ vault operator init -key-shares=1 -key-threshold=1
 $ vault operator unseal <unseal key>
 ```
-Save the unseal keys and root token for later use somewhere.
+Save the unseal keys and root token for later use.
 
 It is configured to use a filesystem storage in the directory `docker/data` and the configuration from `docker/config/vault.hcl`
 
@@ -36,6 +40,10 @@ $ vault write -f transit/keys/backup
 ```
 $ export VAULT_ADDR="http://127.0.0.:8300"
 $ export VAULT_TOKEN=<your token>
+```
+## Run the application
+This will read the env. variables and write the encrypted data to `encrypted.json`.
+```
 $ python -m vmb.main encrypted.json
 2019-11-25 16:09:52,329 [Main][INFO]
 Starting vmb 0.0.1

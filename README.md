@@ -57,9 +57,6 @@ Starting transit encryption with key=backup mount=transit
 2019-11-25 16:09:52,342 [KV Store][INFO]
 Getting KV data from mount=secrets
 
-2019-11-25 16:09:52,343 [KV Store][INFO]
-Getting secrets for mount: secrets
-
 2019-11-25 16:09:52,727 [Main][INFO]
 Finished encrypting and writing data to encrypted.json
 

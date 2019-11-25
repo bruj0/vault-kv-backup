@@ -43,7 +43,7 @@ $ export VAULT_TOKEN=<your token>
 ```
 ## Run the application
 This will read the env. variables and write the encrypted data to `encrypted.json`.
-```
+```c
 $ python -m vmb.main encrypted.json
 2019-11-25 16:09:52,329 [Main][INFO]
 Starting vmb 0.0.1

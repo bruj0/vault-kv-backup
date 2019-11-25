@@ -8,5 +8,4 @@ build
 vmb/__pycache__
 __pycache__
 .vscode
-docker/data
 docker/tmp

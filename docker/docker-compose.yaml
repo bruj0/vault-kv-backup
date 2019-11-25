@@ -1,0 +1,17 @@
+version: '3.0'
+services:
+  vault01:
+      cap_add:
+        - IPC_LOCK
+      command: vault server -config=/vault/config/vault.hcl
+#      depends_on:
+#        - consul_agent_1
+      environment:
+        VAULT_LOG_LEVEL: debug
+        VAULT_REDIRECT_INTERFACE: eth0
+      image: vault:1.2.3
+      ports:
+       - 8300:8200/tcp
+      volumes:
+        - ./config:/vault/config:ro
+        - ./data:/vault/data:rw

@@ -1,0 +1,12 @@
+.vagrant
+*~
+.pytest_cache
+vmb.egg-info
+env
+dist
+build
+vmb/__pycache__
+__pycache__
+.vscode
+docker/data
+docker/tmp

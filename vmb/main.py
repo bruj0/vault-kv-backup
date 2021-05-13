@@ -38,22 +38,14 @@ def main():
         exit(2)
 
     transit = Transit(client=client, encryption_key='backup', mount='transit')
-    kv = KVstore(client, 'secrets', transit=transit)
+    kv = KVstore(client, 'kv', transit=transit)
 
     data = kv.get_base_folder()
-    try:
-        data = json.dumps(data[0], indent=4)
-    except Exception as err:
-        logger.exception(f'Error converting to JSON: {err}')
-        exit(1)
-
     write_to_disk(cfg['out_file'], data)
 
     exported_key = transit.backup_key()
 
-    logger.debug(f"Finished getting data:\n{data}")
     logger.info(f"Finished encrypting and writting data to {cfg['out_file']}")
-    logger.info(f'Encryption used key:\n{exported_key}')
 
 
 if __name__ == "__main__":

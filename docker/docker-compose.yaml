@@ -9,7 +9,7 @@ services:
       environment:
         VAULT_LOG_LEVEL: debug
         VAULT_REDIRECT_INTERFACE: eth0
-      image: vault:1.2.3
+      image: vault:1.7.0
       ports:
        - 8300:8200/tcp
       volumes:

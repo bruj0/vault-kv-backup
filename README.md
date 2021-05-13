@@ -76,7 +76,7 @@ This will give you 2 things:
 ```
 1. The text representation of Transit key used as returned by the `export` API: https://www.vaultproject.io/api/secret/transit/index.html#export-key and can be used to restore it.
 
-The idea is to keep the data encrypted and the key in different physical places in case one is breached. 
+The idea is to keep the data encrypted and the key in different physical places in case one is breached.
 
 ### TODO
 * Automation of included Vault instance

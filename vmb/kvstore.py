@@ -36,7 +36,7 @@ class KVstore:
 
         folder = self.get_folder_content("", self.kv_store)
 
-        return folder
+        return json.dumps(folder)
 
     def get_folder_content(self, path: str, mount_point: str):
         """
@@ -47,7 +47,7 @@ class KVstore:
         :return: a list of either folders or entities
         """
         keys = []
-        content = []
+        content = {}
         try:
             keys = self.client.secrets.kv.v2.list_secrets(
                 path=path,
@@ -62,10 +62,10 @@ class KVstore:
             if key.endswith('/'):
                 # this seems to be a folder
                 folder = self.get_folder_content(path + key, mount_point)
-                content.append(folder)
+                content[key] = folder
             else:
                 # this seems to be an entity
-                content.append(self.get_entity(path, key, mount_point))
+                content[key] = self.get_entity(path, key, mount_point)
                 # content.append(path + key)
 
         return content

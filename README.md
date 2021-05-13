@@ -69,10 +69,12 @@ This will give you 2 things:
 1. A file in json with all the encrypted key->value text, ie:
 
 ```json
-[
-    "vault:v1:mcjbiVnSbXDr11mQgFQwvYS5w/+u9s/gKMB7m4KrUL1S...G8kBI4n6XeAZv/c",
-    "vault:v1:BC7SlJw26l4U3csa/CKYrR5yVXD1s09RBX5N1JykLnuG4GMOEF495qLDcIn3OY1BMMdBqGrBfHb9W/...",
-]
+{
+  "a/": {
+    "b": "vault:v1:z5hGmChsbO8gDuq3KSnhIjqQfwT+Vu7qot4wv8kK0IBU9rljj1P/ZwuxTs2VDU0EMvLUUIZeuqyBFXZ4Mm+NZvTjWzDhTEiBCc92/t0kww=="
+  },
+  "c": "vault:v1:/G10fhCH3RQZVmlfrza7fvUQAy80Fgugv5oJ39sprH17fb6FLGRrNr+0pfLLf7sxnCcIxuJEvhRLkQI1aJx+4TmNTFHwN+ldzk4z884="
+}
 ```
 1. The text representation of Transit key used as returned by the `export` API: https://www.vaultproject.io/api/secret/transit/index.html#export-key and can be used to restore it.
 

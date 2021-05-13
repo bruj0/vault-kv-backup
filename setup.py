@@ -9,7 +9,7 @@ setuptools.setup(
     author="Rodrigo Diaz Leven",
     author_email="ramakandra@gmail.com",
     license = "MIT",
-    #license_file = "LICENSE",   
+    #license_file = "LICENSE",
     description="HashiCorp Vault utility that backups a KV backend and other configuration, encrypting it via the transit secret engine.",
     long_description=long_description,
     long_description_content_type="text/markdown",

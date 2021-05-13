@@ -1,28 +1,30 @@
-import os
-import logging
 import base64
+import logging
+
 from hvac import Client
 
+logger = logging.LoggerAdapter(logging.getLogger(__name__),
+                               {'STAGE': 'Transit encryption'})
 
-logger = logging.LoggerAdapter(logging.getLogger(__name__), {'STAGE': 'Transit encryption'})
 
 class Transit:
     client = None
     encryption_key = None
     mount = None
-    def __init__(self,client,encryption_key,mount):
+
+    def __init__(self, client, encryption_key, mount):
         self.client = client
         self.encryption_key = encryption_key
         self.mount = mount
         logger.info(f'Starting transit encryption with key={encryption_key} mount={mount}')
-    
-    def encrypt(self,data):
-        #logger.debug(f'Trying to base64 encode\n{data}')
+
+    def encrypt(self, data):
+        # logger.debug(f'Trying to base64 encode\n{data}')
 
         try:
-            data_b64=base64.b64encode(data.encode())
-            data_sb64=str(data_b64,"utf-8")
-            #logger.debug(f'data in b64:\n{data_sb64}')
+            data_b64 = base64.b64encode(data.encode())
+            data_sb64 = str(data_b64, "utf-8")
+            # logger.debug(f'data in b64:\n{data_sb64}')
         except Exception as err:
             logger.exception(f'Error: {err}')
             exit(1)
@@ -35,7 +37,8 @@ class Transit:
             )
             ciphertext = encrypt_data_response['data']['ciphertext']
             logger.debug(f'Encrypted response:\n{encrypt_data_response}')
-            #logger.info('Encrypted plaintext ciphertext is: {cipher}'.format(cipher=ciphertext))
+            # logger.info('Encrypted plaintext ciphertext is: {cipher}'.format(cipher=ciphertext))
+
             return ciphertext
         except Exception as err:
             logger.exception(f'Error: {err}')
@@ -53,4 +56,5 @@ class Transit:
         )
 
         backed_up_key = backup_key_response['data']['backup']
+
         return backed_up_key

@@ -1,12 +1,13 @@
 import argparse
 from argparse import ArgumentParser
 from textwrap import dedent
+
 from pkg_resources import get_distribution
 
 
 class ArgParser(ArgumentParser):
     def __init__(self):
-        
+
         __version__ = get_distribution('vmb').version
         description = f"Version {__version__}\nBackup KV backend and other configuration and encrypt it via the transit secret engine"
 
@@ -15,7 +16,8 @@ class ArgParser(ArgumentParser):
             formatter_class=argparse.RawDescriptionHelpFormatter,
         )
 
-        self.add_argument("out_file", help="Output file where data will be written")
+        self.add_argument("out_file",
+                          help="Output file where data will be written")
 
         self.add_argument(
             "--log-to-file",
@@ -25,7 +27,24 @@ class ArgParser(ArgumentParser):
         )
 
         self.add_argument(
-            "--stdout", help="Log output stdout", action="store_true", default=False
+            "--backup-key",
+            nargs="?",
+            help="File path to store backup key file (backup.key if no argument is given)",
+            default="backup.key"
+        )
+
+        self.add_argument(
+            "--kv-path",
+            nargs="?",
+            help="Kv engine path (kv if no argument is given)",
+            default="kv"
+        )
+
+        self.add_argument(
+            "--stdout",
+            help="Log output stdout",
+            action="store_true",
+            default=False
         )
 
         self.add_argument(
@@ -34,17 +53,16 @@ class ArgParser(ArgumentParser):
             action="store_true",
             default=False,
         )
-        
+
         self.add_argument(
             "--version",
             help="Version of vmb",
             action="version",
             version=f"{__version__}"
-        )        
+        )
         self.add_argument(
             "--dry-run",
             help="Dont make any outbound requests",
             action="store_true",
             default=False
-        )   
-
+        )

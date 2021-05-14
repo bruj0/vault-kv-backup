@@ -11,6 +11,7 @@ __pycache__
 docker/tmp
 
 .direnv/
-docker/data/
+.docker/data/
 
 temp/
+.vim/

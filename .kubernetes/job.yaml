@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+    name: vault-kv-backup-token
+    labels:
+        app: vault-kv-backup
+    namespace: vault
+data:
+    VAULT_ADDR: aHR0cDovL3ZhdWx0OjgyMDA=
+    VAULT_TOKEN: dmF1bHRfdG9rZW4=
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    labels:
+        app: vault-kv-backup
+    name: vault-kv-backup
+    namespace: vault
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 20Gi
+    storageClassName: ssd
+    volumeMode: Filesystem
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+    labels:
+        app: vault-kv-backup
+    name: vault-kv-backup
+    namespace: vault
+spec:
+    concurrencyPolicy: Forbid
+    failedJobsHistoryLimit: 5
+    jobTemplate:
+        spec:
+            template:
+                spec:
+                    containers:
+                        - envFrom:
+                            - secretRef:
+                                name: vault-kv-backup-token
+                          image: <YOURREPO>/vault-kv-backup:latest
+                          command:
+                            - vault-kv-backup
+                          imagePullPolicy: Always
+                          name: vault-kv-backup
+                          resources: {}
+                          terminationMessagePath: /dev/termination-log
+                          terminationMessagePolicy: File
+                          volumeMounts:
+                            - mountPath: /backup
+                              name: vault-kv-backup
+                    dnsPolicy: ClusterFirst
+                    restartPolicy: Never
+                    schedulerName: default-scheduler
+                    securityContext: {}
+                    shareProcessNamespace: false
+                    terminationGracePeriodSeconds: 30
+                    volumes:
+                        - name: vault-kv-backup
+                          persistentVolumeClaim:
+                            claimName: vault-kv-backup
+    schedule: 0 */1 * * *
+    successfulJobsHistoryLimit: 3
+    suspend: false

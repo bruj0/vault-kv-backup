@@ -22,16 +22,7 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     install_requires=[
-        'certifi>=2019.9.11',
-        'chardet>=3.0.4',
-        'flatten-json>=0.1.7',
-        'idna>=2.8',
-        'python-box>=3.4.5',
-        'PyYAML>=5.1.2',
-        'requests>=2.22.0',
-        'requests-toolbelt>=0.9.1',
-        'six>=1.13.0',
-        'urllib3>=1.25.6',
+        'hvac==0.10.11'
     ],
     scripts=['bin/vmb']
 )

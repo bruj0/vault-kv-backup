@@ -27,10 +27,17 @@ class ArgParser(ArgumentParser):
         )
 
         self.add_argument(
-            "--backup-file",
+            "--backup-key",
             nargs="?",
             help="File path to store backup key file (backup.key if no argument is given)",
             default="backup.key"
+        )
+
+        self.add_argument(
+            "--kv-path",
+            nargs="?",
+            help="Kv engine path (kv if no argument is given)",
+            default="kv"
         )
 
         self.add_argument(

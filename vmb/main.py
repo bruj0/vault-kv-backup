@@ -42,10 +42,11 @@ def main():
 
     data = kv.get_base_folder()
     write_to_disk(cfg['out_file'], data)
+    logger.info(f"Finished encrypting and writting data to {cfg['out_file']}")
 
     exported_key = transit.backup_key()
-
-    logger.info(f"Finished encrypting and writting data to {cfg['out_file']}")
+    write_to_disk(cfg['backup_file'], exported_key)
+    logger.info(f"Finished encrypting and writting data to {cfg['backup_file']}")
 
 
 if __name__ == "__main__":

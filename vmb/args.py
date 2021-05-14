@@ -27,6 +27,13 @@ class ArgParser(ArgumentParser):
         )
 
         self.add_argument(
+            "--backup-file",
+            nargs="?",
+            help="File path to store backup key file (backup.key if no argument is given)",
+            default="backup.key"
+        )
+
+        self.add_argument(
             "--stdout",
             help="Log output stdout",
             action="store_true",

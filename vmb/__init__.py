@@ -21,7 +21,8 @@ def get_config():
         'out_file': vargs.pop("out_file"),
         'global_cfg': vargs.pop("global_cfg", {}),
         'debug': vargs.pop("debug"),
-        'dry_run': vargs.pop("dry_run")
+        'dry_run': vargs.pop("dry_run"),
+        'backup_file': vargs.pop("backup_file")
     }
 
 __version__ = get_distribution('vmb').version

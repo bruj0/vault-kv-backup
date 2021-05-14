@@ -12,3 +12,5 @@ docker/tmp
 
 .direnv/
 docker/data/
+
+temp/

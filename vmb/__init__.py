@@ -22,7 +22,8 @@ def get_config():
         'global_cfg': vargs.pop("global_cfg", {}),
         'debug': vargs.pop("debug"),
         'dry_run': vargs.pop("dry_run"),
-        'backup_file': vargs.pop("backup_file")
+        'backup_key': vargs.pop("backup_key"),
+        'kv_path': vargs.pop("kv_path")
     }
 
 __version__ = get_distribution('vmb').version

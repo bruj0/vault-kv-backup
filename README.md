@@ -18,15 +18,15 @@ $ git clone https://github.com/bruj0/vault-kv-backup.git
 ```
 ## Optional: Use the provided docker-compose to start Vault
 ```
-$ cd docker
+$ cd .docker
 $ docker-compose up -d
-$ export VAULT_ADDR="http://127.0.0.:8300"
+$ export VAULT_ADDR="http://127.0.0.1:8300"
 $ vault operator init -key-shares=1 -key-threshold=1
 $ vault operator unseal <unseal key>
 ```
 Save the unseal keys and root token for later use.
 
-It is configured to use a filesystem storage in the directory `docker/data` and the configuration from `docker/config/vault.hcl`
+It is configured to use a filesystem storage in the directory `.docker/data` and the configuration from `.docker/config/vault.hcl`
 
 ## Enable the transit engine in Vault
 
@@ -38,31 +38,57 @@ $ vault write -f transit/keys/backup
 ## Set the environment variables
 
 ```
-$ export VAULT_ADDR="http://127.0.0.:8300"
+$ export VAULT_ADDR="http://127.0.0.1:8300"
 $ export VAULT_TOKEN=<your token>
 ```
 ## Run the application
 This will read the env. variables and write the encrypted data to `encrypted.json`.
 ```c
-$ python -m vmb.main encrypted.json
-2019-11-25 16:09:52,329 [Main][INFO]
+$ vmb --debug encrypted.json
+2021-05-14 09:43:51,299 [Main][INFO] (vmb.main:14)
 Starting vmb 0.0.1
 
-2019-11-25 16:09:52,329 [Main][INFO]
+2021-05-14 09:43:51,300 [Main][INFO] (vmb.main:28)
 Trying to login with Token
 
-2019-11-25 16:09:52,342 [Transit encryption][INFO]
+2021-05-14 09:43:51,300 [Main][DEBUG] (vmb.main:29)
+Debug enabled
+
+2021-05-14 09:43:51,319 [Transit encryption][INFO] (vmb.transit:19)
 Starting transit encryption with key=backup mount=transit
 
-2019-11-25 16:09:52,342 [KV Store][INFO]
-Getting KV data from mount=secrets
+2021-05-14 09:43:51,320 [KV Store][INFO] (vmb.kvstore:18)
+Getting KV data from mount=kv
 
-2019-11-25 16:09:52,727 [Main][INFO]
-Finished encrypting and writing data to encrypted.json
+2021-05-14 09:43:51,321 [KV Store][INFO] (vmb.kvstore:32)
+Getting secrets for mount: kv
 
-2019-11-25 16:09:52,727 [Main][INFO]
-Encryption used key:
-eyJwb2xpY3kiOnsibmFtZSI6ImJhY2t1cCIsImtleXMiOnsiMSI6eyJrZXkiOiJpaWdxS2dielFrMVgrN2tT...fV19fQo=
+2021-05-14 09:43:51,329 [KV Store][DEBUG] (vmb.kvstore:59)
+Found a folder: kv/
+
+2021-05-14 09:43:51,337 [KV Store][DEBUG] (vmb.kvstore:59)
+Found a folder: kv/a/
+
+2021-05-14 09:43:51,343 [KV Store][DEBUG] (vmb.kvstore:92)
+Found an entity dict_keys(['c']) with
+
+2021-05-14 09:43:51,351 [Transit encryption][DEBUG] (vmb.transit:39)
+Encrypted response:
+{'request_id': '751fd033-c512-184f-c43c-83e845d6af06', 'lease_id': '', 'renewable': False, 'lease_duration': 0, 'data': {'ciphertext': 'vault:v1:PUr6Qcs+GBOVMzv1yZRyJ0qcoSZM3+XBbiMKkKZn9RLMOIDOlb7DmQFlcUXSj1oYJUF1x6DUedz6PfgXsLhYnFdtGLTTGWfNec5E', 'key_version': 1}, 'wrap_info': None, 'warnings': None, 'auth': None}
+
+2021-05-14 09:43:51,356 [KV Store][DEBUG] (vmb.kvstore:92)
+Found an entity dict_keys(['e']) with
+
+2021-05-14 09:43:51,362 [Transit encryption][DEBUG] (vmb.transit:39)
+Encrypted response:
+{'request_id': '62a2d048-6326-5ca8-54d2-8ff88b0a4e1e', 'lease_id': '', 'renewable': False, 'lease_duration': 0, 'data': {'ciphertext': 'vault:v1:tfhB2aCyhMhCSpDa2uHwrFM26pOAfDPRy0o1fpsu+/kDMTUw5Co9gbkuYEOTs9v7MQjxZfpUE/NsHZPhRRYpJKwbCWQG1eH5dA==', 'key_version': 1}, 'wrap_info': None, 'warnings': None, 'auth': None}
+
+2021-05-14 09:43:51,364 [Main][INFO] (vmb.main:45)
+Finished encrypting and writting data to encrypted.json
+
+2021-05-14 09:43:51,384 [Main][INFO] (vmb.main:49)
+Finished encrypting and writting data to backup.key
+
 ```
 
 This will give you 2 things:
@@ -71,12 +97,12 @@ This will give you 2 things:
 ```json
 {
   "a/": {
-    "b": "vault:v1:z5hGmChsbO8gDuq3KSnhIjqQfwT+Vu7qot4wv8kK0IBU9rljj1P/ZwuxTs2VDU0EMvLUUIZeuqyBFXZ4Mm+NZvTjWzDhTEiBCc92/t0kww=="
+    "b": "vault:v1:qzQ9JnPuiRK8rs2mWVeABa1MnrI113tVlws/ez0UyXblaXG7byMqH8SySSg06uglJ9NwyTz3KJAMlDxXHNYFgRWwCW6uwrdjA8LY"
   },
-  "c": "vault:v1:/G10fhCH3RQZVmlfrza7fvUQAy80Fgugv5oJ39sprH17fb6FLGRrNr+0pfLLf7sxnCcIxuJEvhRLkQI1aJx+4TmNTFHwN+ldzk4z884="
+  "d": "vault:v1:dct+5E/xQv51XDdkZpPtQHXdEFZmjKmZacTaqm+YLiTQghzufzj0wb9ggOanaFGeDKq2gx2CA+KN30xe/4qgY4559aQv43qteA=="
 }
 ```
-1. The text representation of Transit key used as returned by the `export` API: https://www.vaultproject.io/api/secret/transit/index.html#export-key and can be used to restore it.
+1. The Transit key used as returned by the `export` API: https://www.vaultproject.io/api/secret/transit/index.html#export-key and can be used to restore it.
 
 The idea is to keep the data encrypted and the key in different physical places in case one is breached.
 
